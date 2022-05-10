@@ -22,6 +22,12 @@ This is a simple onboarding API that contains the following endpoint:
 - PUT: [domain_name]/api/v1/comment/{id}
 - POST: [domain_name]/api/v1/comment
 
+### LIKE
+- GET: [domain_name]/api/v1/like
+- GET: [domain_name]/api/v1/like/{id}
+- PUT: [domain_name]/api/v1/like/{id}
+- POST: [domain_name]/api/v1/like
+
 ## # Installation
 
 ### How to install Laravel Passport?
