@@ -6,6 +6,7 @@ use \App\Http\Controllers\Auth\UserAuthsController;
 use \App\Http\Controllers\PostController;
 use \App\Http\Controllers\CommentController;
 use \App\Http\Controllers\LikeController;
+use \App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,4 +28,8 @@ Route::middleware('auth:api')->prefix('v1')->group(function() {
     Route::apiResource('post', PostController::class);
     Route::apiResource('comment', CommentController::class);
     Route::apiResource('like', LikeController::class);
+
+    Route::post('/profile', [ProfileController::class, 'store']);
+    Route::get('/profile/{id}', [ProfileController::class, 'show']);
+    Route::put('/profile/{id}', [ProfileController::class, 'update']);
 });
