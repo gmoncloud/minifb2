@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\Auth\UserAuthsController;
 use \App\Http\Controllers\PostController;
+use \App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,4 +24,5 @@ Route::prefix('v1')->group(function () {
 
 Route::middleware('auth:api')->prefix('v1')->group(function() {
     Route::apiResource('post', PostController::class);
+    Route::apiResource('comment', CommentController::class);
 });

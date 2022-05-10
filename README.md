@@ -15,6 +15,13 @@ This is a simple onboarding API that contains the following endpoint:
 - PUT: [domain_name]/api/v1/post/{id}
 - POST: [domain_name]/api/v1/post
 
+### COMMENT
+- GET: [domain_name]/api/v1/comment
+- GET: [domain_name]/api/v1/comment/{id}
+- DELETE: [domain_name]/api/v1/comment/{id}
+- PUT: [domain_name]/api/v1/comment/{id}
+- POST: [domain_name]/api/v1/comment
+
 ## # Installation
 
 ### How to install Laravel Passport?
