@@ -4,8 +4,16 @@
 
 This is a simple onboarding API that contains the following endpoint:
 
-- [domain_name]/api/v1/register
-- [domain_name]/api/v1/login
+### AUTH
+- POST: [domain_name]/api/v1/register
+- POST: [domain_name]/api/v1/login
+
+## POST
+- GET: [domain_name]/api/v1/post
+- GET: [domain_name]/api/v1/post/{id}
+- DELETE: [domain_name]/api/v1/post/{id}
+- PUT: [domain_name]/api/v1/post/{id}
+- POST: [domain_name]/api/v1/post
 
 ## # Installation
 
