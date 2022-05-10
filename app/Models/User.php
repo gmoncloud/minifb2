@@ -45,9 +45,9 @@ class User extends Authenticatable
     /**
      * Get all the post from the user
      */
-    public function userPosts()
+    public function posts()
     {
-        return $this->hasMany(UserPost::class);
+        return $this->hasMany(Post::class);
     }
 
     /**
