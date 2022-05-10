@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\Auth\UserAuthsController;
+use \App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,4 +21,6 @@ Route::prefix('v1')->group(function () {
     Route::post('/login', [UserAuthsController::class, 'login']);
 });
 
-
+Route::middleware('auth:api')->prefix('v1')->group(function() {
+    Route::apiResource('post', PostController::class);
+});
