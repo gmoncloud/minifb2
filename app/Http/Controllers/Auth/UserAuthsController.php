@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Profile;
 use App\Http\Requests\UserAuthsRequest;
 use App\Http\Requests\LoginRequest;
 
@@ -20,6 +21,11 @@ class UserAuthsController extends Controller
         $data = $request->all();
         $data['password'] = bcrypt($request->password);
         $user = User::create($data);
+
+        $profile = new Profile();
+        $profile->user_id = $user->id;
+        $profile->save();
+
         $token = $user->createToken('authToken')->accessToken;
         return response(['user' => $user, 'token' => $token]);
     }
