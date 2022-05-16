@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->string('profile_url');
-            $table->string('education');
-            $table->string('current_city');
-            $table->string('hometown');
-            $table->string('work');
+            $table->string('profile_url')->nullable();
+            $table->string('education')->nullable();
+            $table->string('current_city')->nullable();
+            $table->string('hometown')->nullable();
+            $table->string('work')->nullable();
             $table->timestamps();
         });
     }
@@ -33,5 +33,6 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('profiles');
+        Schema::dropIfExists('users');
     }
 };

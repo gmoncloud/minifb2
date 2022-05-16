@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Carbon\Carbon;
 
 class PostResource extends JsonResource
 {
@@ -17,7 +18,7 @@ class PostResource extends JsonResource
         return [
             'id' => (string) $this->id,
             'user_id' => (string) $this->user_id,
-            'post_id' => (string) $this->post_id,
+            'written_text' => $this->written_text,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];
