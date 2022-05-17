@@ -7,6 +7,7 @@ use App\Http\Resources\PostResource;
 use App\Models\Like;
 use Illuminate\Http\Request;
 use App\Http\Resources\LikeResource;
+use Ramsey\Uuid\Type\Integer;
 
 class LikeController extends Controller
 {
@@ -72,5 +73,18 @@ class LikeController extends Controller
     public function destroy(Like $like)
     {
         //
+    }
+
+    /**
+     * Count Post Likes
+     *
+     * @param  Integer $post_id
+     * @return \Illuminate\Http\Response
+     */
+    public function countLikes($post_id) {
+        $countLikes = Like::where('post_id', $post_id)
+            ->where('like', 1)->count();
+
+        return response(['likes' => $countLikes, 'message' => 'Success'], 200);
     }
 }

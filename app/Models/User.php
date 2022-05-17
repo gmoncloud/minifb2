@@ -73,4 +73,12 @@ class User extends Authenticatable
     {
         return $this->hasOne(Profile::class);
     }
+
+    /**
+     * Get all the friends from the user
+     */
+    public function friends()
+    {
+        return $this->hasMany(Friend::class);
+    }
 }

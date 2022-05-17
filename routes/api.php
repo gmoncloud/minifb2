@@ -7,6 +7,7 @@ use \App\Http\Controllers\PostController;
 use \App\Http\Controllers\CommentController;
 use \App\Http\Controllers\LikeController;
 use \App\Http\Controllers\ProfileController;
+use \App\Http\Controllers\FriendController;
 
 
 
@@ -34,4 +35,7 @@ Route::middleware('auth:api')->prefix('v1')->group(function() {
     Route::post('/profile', [ProfileController::class, 'store']);
     Route::get('/profile/{id}', [ProfileController::class, 'show']);
     Route::put('/profile/{id}', [ProfileController::class, 'update']);
+
+    Route::apiResource('friend', FriendController::class);
+    Route::get('count-likes/{post_id}', [LikeController::class, 'countLikes']);
 });
