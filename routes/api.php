@@ -38,4 +38,5 @@ Route::middleware('auth:api')->prefix('v1')->group(function() {
 
     Route::apiResource('friend', FriendController::class);
     Route::get('count-likes/{post_id}', [LikeController::class, 'countLikes']);
+    Route::get('find-friends/{user_id}', [FriendController::class, 'findFriends']);
 });
