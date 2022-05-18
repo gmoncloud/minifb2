@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Friend;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\FriendResource;
 
@@ -24,7 +25,7 @@ class FriendController extends Controller
             'profiles.current_city',
             'profiles.hometown',
             'profiles.work')
-            ->join('users', 'users.id', '=', 'friends.user_id')
+            ->join('users', 'users.id', '=', 'friends.friend_id')
             ->join('profiles', 'profiles.user_id', '=', 'friends.friend_id')
         ->orderBy('friends.friend_id')
         ->get();
@@ -66,10 +67,10 @@ class FriendController extends Controller
             'profiles.current_city',
             'profiles.hometown',
             'profiles.work')
-            ->join('users', 'users.id', '=', 'friends.user_id')
+            ->join('users', 'users.id', '=', 'friends.friend_id')
             ->join('profiles', 'profiles.user_id', '=', 'friends.friend_id')
             ->where('friends.user_id', $user_id)
-            ->orderBy('friends.friend_id')
+            ->orderBy('friends.user_id')
             ->get();
 
         return response([ 'friends' =>
@@ -97,6 +98,34 @@ class FriendController extends Controller
      */
     public function destroy(Friend $friend)
     {
+        $friend->delete();
         return response(['message' => 'Friend deleted']);
+    }
+
+    public function findFriends($user_id) {
+        $friends = Friend::select(
+            'users.id')
+            ->join('users', 'users.id', '=', 'friends.friend_id')
+            ->where('friends.user_id', $user_id)
+            ->orderBy('friends.user_id')
+            ->get();
+
+        foreach($friends as $friend){
+            $friendIds[] = $friend->id;
+        }
+
+        $friendIds = !empty($friendIds) ? $friendIds : [];
+
+        $users = User::select(
+            'users.id',
+            'users.name'
+        )
+            ->whereNotIn('id', $friendIds)
+            ->where('users.id', '!=', $user_id)
+            ->orderBy('users.name')
+            ->get();
+
+        return response([ 'users' => $users,
+            'message' => 'Success'], 200);
     }
 }
