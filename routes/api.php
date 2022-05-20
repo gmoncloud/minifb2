@@ -32,9 +32,10 @@ Route::middleware('auth:api')->prefix('v1')->group(function() {
     Route::apiResource('comment', CommentController::class);
     Route::apiResource('like', LikeController::class);
 
-    Route::post('/profile', [ProfileController::class, 'store']);
-    Route::get('/profile/{id}', [ProfileController::class, 'show']);
-    Route::put('/profile/{id}', [ProfileController::class, 'update']);
+//    Route::post('/profile', [ProfileController::class, 'store']);
+//    Route::get('/profile/{id}', [ProfileController::class, 'show']);
+//    Route::put('/profile/{id}', [ProfileController::class, 'update']);
+    Route::apiResource('profile', ProfileController::class);
 
     Route::apiResource('friend', FriendController::class);
     Route::get('count-likes/{post_id}', [LikeController::class, 'countLikes']);
