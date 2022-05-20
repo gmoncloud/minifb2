@@ -68,13 +68,13 @@ class ProfileController extends Controller
             $image->move($destinationPath, $profileImage);
             $input['profile_image'] = "$profileImage";
         }else{
-            unset($input['image']);
+            unset($input['profile_image']);
         }
 
         $profile = Profile::where("id", $profileData->id)
             ->update([
                 'display_name' => $request->display_name,
-                'profile_image' =>  $input['profile_image'],
+                'profile_image' => !empty($input['profile_image']) ? $input['profile_image'] : $profileData->profile_image,
                 'education' => $request->education,
                 'current_city' => $request->current_city,
                 'hometown' => $request->hometown,
