@@ -15,9 +15,9 @@ class ProfileResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'user_id' => $this->user_id,
-            'profile_url' => $this->profile_url,
-            'education' => $this->education,
+            'user_id' => (string) $this->user_id,
+            'display_name' => $this->display_name,
+            'profile_image' => !empty($this->profile_image) ? url('/images/profiles') . DIRECTORY_SEPARATOR .  $this->profile_image : null,
             'current_city' => $this->current_city,
             'hometown' => $this->hometown,
             'work' => $this->work,
