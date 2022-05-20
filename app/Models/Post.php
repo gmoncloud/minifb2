@@ -17,6 +17,6 @@ class Post extends Model
     protected $fillable = [
         'user_id',
         'written_text',
-        'media_location',
+        'post_image',
     ];
 }

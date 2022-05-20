@@ -21,7 +21,8 @@ class FriendController extends Controller
             'friends.friend_id',
             'users.name',
             'profiles.education',
-            'profiles.profile_url',
+            'profiles.display_name',
+            'profiles.profile_image',
             'profiles.current_city',
             'profiles.hometown',
             'profiles.work')
@@ -63,7 +64,8 @@ class FriendController extends Controller
             'friends.friend_id',
             'users.name',
             'profiles.education',
-            'profiles.profile_url',
+            'profiles.display_name',
+            'profiles.profile_image',
             'profiles.current_city',
             'profiles.hometown',
             'profiles.work')

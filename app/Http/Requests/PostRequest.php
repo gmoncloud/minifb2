@@ -25,8 +25,7 @@ class PostRequest extends FormRequest
     {
         return [
             'user_id' => 'required',
-            'written_text' => 'required',
-            'media_location' => 'required'
+            'written_text' => 'required'
         ];
     }
 }
