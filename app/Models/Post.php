@@ -19,4 +19,20 @@ class Post extends Model
         'written_text',
         'post_image',
     ];
+
+    /**
+     * Get all the comments from the post
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * Get all the likes from the post
+     */
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
 }
