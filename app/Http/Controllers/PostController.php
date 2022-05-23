@@ -17,9 +17,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('created_at', 'desc')->get();
-        return response([ 'posts' =>
-            PostResource::collection($posts),
+        $posts = Post::with('comments', 'likes')
+            ->get();
+
+        return response([ 'posts' => $posts,
             'message' => 'Success'], 200);
     }
 
