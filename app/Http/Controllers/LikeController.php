@@ -32,7 +32,19 @@ class LikeController extends Controller
      */
     public function store(Request $request)
     {
-        $like = Like::create($request->all());
+        $like = Like::updateOrCreate(
+            [
+                'post_id' =>  $request->post_id,
+                'user_id' =>  $request->user_id
+
+            ],
+            [
+                'post_id' =>  $request->post_id,
+                'user_id' =>  $request->user_id,
+                'like' => $request->like
+            ]
+        );
+
         return response(['like' => new
         LikeResource($like),
             'message' => 'Success'], 200);

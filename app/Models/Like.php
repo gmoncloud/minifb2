@@ -27,4 +27,12 @@ class Like extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Get the post that owns the like.
+     */
+    public function post()
+    {
+        $this->belongsTo(Post::class);
+    }
 }
