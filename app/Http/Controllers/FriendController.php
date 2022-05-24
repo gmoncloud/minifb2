@@ -31,6 +31,10 @@ class FriendController extends Controller
         ->orderBy('friends.friend_id')
         ->get();
 
+        foreach ($friends as $friend){
+            $friend['profile_image'] = !empty($friend['profile_image']) ? url('/images/profiles') . DIRECTORY_SEPARATOR .  $friend['profile_image'] : null;
+        }
+
         return response([ 'friends' =>
             FriendResource::collection($friends),
             'message' => 'Success'], 200);
@@ -74,6 +78,10 @@ class FriendController extends Controller
             ->where('friends.user_id', $user_id)
             ->orderBy('friends.user_id')
             ->get();
+
+        foreach ($friends as $friend){
+            $friend['profile_image'] = !empty($friend['profile_image']) ? url('/images/profiles') . DIRECTORY_SEPARATOR .  $friend['profile_image'] : null;
+        }
 
         return response([ 'friends' =>
             FriendResource::collection($friends),
@@ -120,12 +128,18 @@ class FriendController extends Controller
 
         $users = User::select(
             'users.id',
-            'users.name'
+            'users.name',
+            'profiles.profile_image'
         )
-            ->whereNotIn('id', $friendIds)
+            ->join('profiles', 'profiles.user_id', '=', 'users.id')
+            ->whereNotIn('users.id', $friendIds)
             ->where('users.id', '!=', $user_id)
             ->orderBy('users.name')
             ->get();
+
+        foreach ($users as $user){
+            $user['profile_image'] = !empty($user['profile_image']) ? url('/images/profiles') . DIRECTORY_SEPARATOR .  $user['profile_image'] : null;
+        }
 
         return response([ 'users' => $users,
             'message' => 'Success'], 200);
