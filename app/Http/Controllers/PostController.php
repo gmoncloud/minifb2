@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ProfileResource;
 use App\Models\Post;
 use App\Http\Requests\PostRequest;
 use App\Http\Resources\PostResource;
-use App\Models\Profile;
+use Illuminate\Database\Eloquent\Builder;
 
 class PostController extends Controller
 {
@@ -18,7 +17,16 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::with('comments', 'likes')
-            ->get();
+            ->withCount([
+            'comments',
+            'likes' => function (Builder $query) {
+                $query->where('like', 1);
+            }
+        ])->get();
+
+        foreach ($posts as $post){
+            $post['post_image'] = !empty($post['post_image']) ? url('/images/posts') . DIRECTORY_SEPARATOR .  $post['post_image'] : null;
+        }
 
         return response([ 'posts' => $posts,
             'message' => 'Success'], 200);
@@ -96,6 +104,6 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
-        return response(['message' => 'Post deleted']);
+        return response(['message' => 'Post deleted'], 200);
     }
 }
