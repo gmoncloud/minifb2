@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
-use Illuminate\Http\Request;
 use App\Http\Requests\CommentRequest;
 use App\Http\Resources\CommentResource;
 
@@ -71,6 +70,6 @@ class CommentController extends Controller
     public function destroy(Comment $comment)
     {
         $comment->delete();
-        return response(['message' => 'Comment deleted']);
+        return response(['message' => 'Comment deleted'], 200);
     }
 }
