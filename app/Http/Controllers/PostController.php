@@ -6,9 +6,11 @@ use App\Models\Post;
 use App\Http\Requests\PostRequest;
 use App\Http\Resources\PostResource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Traits\ImageUpload;
 
 class PostController extends Controller
 {
+    use ImageUpload;
     /**
      * Display a listing of the resource.
      *
@@ -44,10 +46,8 @@ class PostController extends Controller
         $input['post_image'] = null;
 
         if ($image = $request->file('post_image')) {
-            $destinationPath = 'images/posts/';
-            $postImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
-            $image->move($destinationPath, $postImage);
-            $input['post_image'] = "$postImage";
+            $filePath = $this->uploadImage($image, 'posts');
+            $input['post_image'] = $filePath;
         }
 
         $post = Post::create($input);
@@ -78,13 +78,11 @@ class PostController extends Controller
     public function update(PostRequest $request, Post $post)
     {
         $input = $request->all();
-        $input['profile_image'] = $post->post_image;
+        $input['post_image'] = $post->post_image;
 
         if ($image = $request->file('post_image')) {
-            $destinationPath = 'images/posts/';
-            $postImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
-            $image->move($destinationPath, $postImage);
-            $input['post_image'] = "$postImage";
+            $filePath = $this->uploadImage($image, 'posts');
+            $input['post_image'] = $filePath;
         }else{
             unset($input['post_image']);
         }

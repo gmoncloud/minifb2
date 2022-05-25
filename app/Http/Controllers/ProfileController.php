@@ -4,29 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Models\Profile;
 use App\Http\Resources\ProfileResource;
-use Illuminate\Http\Request;
+use App\Traits\ImageUpload;
+use App\Http\Requests\ProfileRequest;
 
 class ProfileController extends Controller
 {
+    use ImageUpload;
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\ProfileRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProfileRequest $request)
     {
-        $request->validate([
-            'profile_image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-
         $input = $request->all();
 
         if ($image = $request->file('profile_image')) {
-            $destinationPath = 'images/profiles/';
-            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
-            $image->move($destinationPath, $profileImage);
-            $input['profile_image'] = "$profileImage";
+            $filePath = $this->uploadImage($image, 'profiles');
+            $input['profile_image'] = $filePath;
         }
 
         $profile = Profile::create($input);
@@ -52,21 +48,19 @@ class ProfileController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\ProfileRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProfileRequest $request, $id)
     {
         $profileData = Profile::where('user_id', $id)->first();
 
         $input = $request->all();
 
         if ($image = $request->file('profile_image')) {
-            $destinationPath = 'images/profiles/';
-            $profileImage = date('YmdHis') . "." . $image->getClientOriginalExtension();
-            $image->move($destinationPath, $profileImage);
-            $input['profile_image'] = "$profileImage";
+            $filePath = $this->uploadImage($image, 'profiles');
+            $input['profile_image'] = $filePath;
         }else{
             unset($input['profile_image']);
         }
