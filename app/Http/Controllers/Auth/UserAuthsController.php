@@ -41,7 +41,7 @@ class UserAuthsController extends Controller
         $data = $request->all();
 
         if(!auth()->attempt($data)) {
-            return response(['error_message' => 'Incorrect Details. Please try again']);
+            return response(['error_message' => 'Incorrect Details. Please try again.']);
         }
 
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
