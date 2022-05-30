@@ -24,7 +24,7 @@ class ProfileFactory extends Factory
             },
             'current_city' => $this->faker->city(),
             'hometown' => $this->faker->city(),
-            'work' => $this->faker->jobTitle()
+            'work' => $this->faker->jobTitle() 
         ];
     }
 }
