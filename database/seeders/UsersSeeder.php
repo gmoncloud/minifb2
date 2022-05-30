@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class UsersSeeder extends Seeder
 {
@@ -15,6 +16,8 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->times(100)->create();
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        User::factory()->times(10000)->create();
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
