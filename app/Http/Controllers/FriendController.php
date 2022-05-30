@@ -31,9 +31,9 @@ class FriendController extends Controller
         ->orderBy('friends.friend_id')
         ->get();
 
-        foreach ($friends as $friend){
-            $friend['profile_image'] = !empty($friend['profile_image']) ? url('/images/profiles') . DIRECTORY_SEPARATOR .  $friend['profile_image'] : null;
-        }
+//        foreach ($friends as $friend){
+//            $friend['profile_image'] = !empty($friend['profile_image']) ? url('/images/profiles') . DIRECTORY_SEPARATOR .  $friend['profile_image'] : null;
+//        }
 
         return response([ 'friends' =>
             FriendResource::collection($friends),
