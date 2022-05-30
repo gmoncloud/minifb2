@@ -33,7 +33,6 @@ class FriendController extends Controller
 
         return response([ 'friends' => $friends,
             'message' => 'Success'], 200);
-
     }
 
     /**
