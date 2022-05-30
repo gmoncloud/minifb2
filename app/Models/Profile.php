@@ -33,7 +33,11 @@ class Profile extends Model
         return $this->belongsTo(User::class);
     }
 
-    function profileImage(): Attribute {
-        return Attribute::get(fn($value) => !empty($value) ? url('/images/profiles') . DIRECTORY_SEPARATOR .  $value : null);
+    /**
+     * Get the user that owns the profile.
+     */
+    public function friend()
+    {
+        return $this->hasOne(Friend::class);
     }
 }

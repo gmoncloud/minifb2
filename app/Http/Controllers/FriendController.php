@@ -29,14 +29,9 @@ class FriendController extends Controller
             ->join('users', 'users.id', '=', 'friends.friend_id')
             ->join('profiles', 'profiles.user_id', '=', 'friends.friend_id')
         ->orderBy('friends.friend_id')
-        ->get();
+        ->paginate(2);
 
-//        foreach ($friends as $friend){
-//            $friend['profile_image'] = !empty($friend['profile_image']) ? url('/images/profiles') . DIRECTORY_SEPARATOR .  $friend['profile_image'] : null;
-//        }
-
-        return response([ 'friends' =>
-            FriendResource::collection($friends),
+        return response([ 'friends' => $friends,
             'message' => 'Success'], 200);
 
     }
@@ -78,10 +73,6 @@ class FriendController extends Controller
             ->where('friends.user_id', $user_id)
             ->orderBy('friends.user_id')
             ->get();
-
-        foreach ($friends as $friend){
-            $friend['profile_image'] = !empty($friend['profile_image']) ? url('/images/profiles') . DIRECTORY_SEPARATOR .  $friend['profile_image'] : null;
-        }
 
         return response([ 'friends' =>
             FriendResource::collection($friends),

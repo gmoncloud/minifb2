@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Profile;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -10,6 +12,13 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
+     public function configure()
+     {
+         return $this->afterCreating(function (User $user) {
+            Profile::factory()->create(['user' => $user]);
+         });
+     }
+
     /**
      * Define the model's default state.
      *

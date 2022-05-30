@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +18,10 @@ class ProfileFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => $this->faker->unique()->numberBetween($min = 1, $max = 100),
-            'display_name' => $this->faker->unique()->firstName(),
+            'user_id' => User::factory(),
+            'display_name' => function (array $attributes) {
+                return User::find($attributes['user_id'])->name;
+            },
             'current_city' => $this->faker->city(),
             'hometown' => $this->faker->city(),
             'work' => $this->faker->jobTitle()
