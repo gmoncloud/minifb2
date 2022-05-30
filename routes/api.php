@@ -29,6 +29,7 @@ Route::prefix('v1')->group(function () {
 
 Route::middleware('auth:api')->prefix('v1')->group(function() {
     Route::apiResource('post', PostController::class);
+    Route::get('/view-user-posts/{user_id}', [PostController::class, 'viewUserPost']);
     Route::apiResource('comment', CommentController::class);
     Route::apiResource('like', LikeController::class, ['except' => ['index', 'show', 'destroy']]);
 

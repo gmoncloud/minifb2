@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use App\Http\Requests\PostRequest;
 use App\Http\Resources\PostResource;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,17 +19,14 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('comments', 'likes')
+        $posts = Post::with('comments', 'likes', 'user')
             ->withCount([
             'comments',
             'likes' => function (Builder $query) {
                 $query->where('like', 1);
             }
-        ])->get();
-
-        foreach ($posts as $post){
-            $post['post_image'] = !empty($post['post_image']) ? url('/images/posts') . DIRECTORY_SEPARATOR .  $post['post_image'] : null;
-        }
+        ])->orderBy('posts.created_at', 'desc')
+            ->paginate(10);
 
         return response([ 'posts' => $posts,
             'message' => 'Success'], 200);
@@ -103,5 +101,23 @@ class PostController extends Controller
     {
         $post->delete();
         return response(['message' => 'Post deleted'], 200);
+    }
+
+    public function viewUserPost($user_id)
+    {
+        $posts = Post::with('comments.user', 'likes', 'user')
+            ->withCount([
+                'comments',
+                'likes' => function (Builder $query) {
+                    $query->where('like', 1);
+                }
+            ])
+            ->where('user_id', $user_id)
+            ->orderBy('posts.created_at', 'desc')
+            ->paginate(2);
+
+        return response([ 'posts' => $posts,
+            'message' => 'Success'], 200);
+
     }
 }

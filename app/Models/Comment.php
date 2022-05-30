@@ -20,12 +20,14 @@ class Comment extends Model
         'comment_text'
     ];
 
+//    protected $with = ['user'];
+
     /**
      * Get the user that owns the comment.
      */
     public function user()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -33,6 +35,6 @@ class Comment extends Model
      */
     public function post()
     {
-        $this->belongsTo(Post::class);
+        return $this->belongsTo(Post::class);
     }
 }
