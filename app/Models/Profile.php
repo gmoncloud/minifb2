@@ -40,8 +40,4 @@ class Profile extends Model
     {
         return $this->hasOne(Friend::class);
     }
-
-    function profileImage(): Attribute {
-        return Attribute::get(fn($value) => !empty($value) ? url('/images/profiles') . DIRECTORY_SEPARATOR .  $value : null);
-    }
 }
