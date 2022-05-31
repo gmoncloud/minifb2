@@ -34,14 +34,10 @@ class Profile extends Model
     }
 
     /**
-     * Get the friend that owns the profile.
+     * Get the user that owns the profile.
      */
     public function friend()
     {
         return $this->hasOne(Friend::class);
-    }
-  
-    function profileImage(): Attribute {
-        return Attribute::get(fn($value) => !empty($value) ? url('/images/profiles') . DIRECTORY_SEPARATOR .  $value : null);
     }
 }

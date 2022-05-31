@@ -26,6 +26,7 @@ class PostController extends Controller
                 $query->where('like', 1);
             }
         ])->orderBy('posts.created_at', 'desc')
+            ->orderBy('posts.id', 'asc')
             ->paginate(10);
 
         return response([ 'posts' => $posts,
@@ -114,7 +115,7 @@ class PostController extends Controller
             ])
             ->where('user_id', $user_id)
             ->orderBy('posts.created_at', 'desc')
-            ->paginate(2);
+            ->paginate(10);
 
         return response([ 'posts' => $posts,
             'message' => 'Success'], 200);
