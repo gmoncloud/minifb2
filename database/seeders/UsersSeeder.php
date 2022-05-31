@@ -9,7 +9,6 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Profile;
 use App\Models\Like;
-use Illuminate\Support\Facades\DB;
 
 class UsersSeeder extends Seeder
 {
