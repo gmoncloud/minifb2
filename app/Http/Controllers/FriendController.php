@@ -29,10 +29,11 @@ class FriendController extends Controller
             ->join('users', 'users.id', '=', 'friends.friend_id')
             ->join('profiles', 'profiles.user_id', '=', 'friends.friend_id')
         ->orderBy('friends.friend_id')
-        ->paginate(2);
+        ->paginate(10);
 
         return response([ 'friends' => $friends,
             'message' => 'Success'], 200);
+
     }
 
     /**
@@ -71,10 +72,9 @@ class FriendController extends Controller
             ->join('profiles', 'profiles.user_id', '=', 'friends.friend_id')
             ->where('friends.user_id', $user_id)
             ->orderBy('friends.user_id')
-            ->get();
+            ->paginate(10);
 
-        return response([ 'friends' =>
-            FriendResource::collection($friends),
+        return response([ 'friends' => $friends,
             'message' => 'Success'], 200);
     }
 
@@ -108,7 +108,7 @@ class FriendController extends Controller
             ->join('users', 'users.id', '=', 'friends.friend_id')
             ->where('friends.user_id', $user_id)
             ->orderBy('friends.user_id')
-            ->get();
+            ->paginate(10);
 
         foreach($friends as $friend){
             $friendIds[] = $friend->id;
@@ -125,7 +125,7 @@ class FriendController extends Controller
             ->whereNotIn('users.id', $friendIds)
             ->where('users.id', '!=', $user_id)
             ->orderBy('users.name')
-            ->get();
+            ->paginate(10);
 
         foreach ($users as $user){
             $user['profile_image'] = !empty($user['profile_image']) ? url('/images/profiles') . DIRECTORY_SEPARATOR .  $user['profile_image'] : null;
