@@ -6,6 +6,7 @@ use App\Models\Friend;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\FriendResource;
+use Illuminate\Http\Response;
 
 class FriendController extends Controller
 {
@@ -14,7 +15,7 @@ class FriendController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): Response
     {
         $friends = Friend::select(
             'friends.id',
@@ -31,9 +32,10 @@ class FriendController extends Controller
         ->orderBy('friends.friend_id')
         ->paginate(10);
 
-        return response([ 'friends' => $friends,
-            'message' => 'Success'], 200);
-
+        return response([
+            'friends' => $friends,
+            'message' => 'Success',
+        ], 200);
     }
 
     /**
@@ -42,21 +44,23 @@ class FriendController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $friend = Friend::create($request->all());
-        return response([ 'friend' => new
-        FriendResource($friend),
-            'message' => 'Success'], 200);
+
+        return response([
+            'friend'  => new FriendResource($friend),
+            'message' => 'Success',
+        ], 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Friend  $friend
+     * @param  int $userId
      * @return \Illuminate\Http\Response
      */
-    public function show($user_id)
+    public function show(int $userId): Response
     {
         $friends = Friend::select(
             'friends.id',
@@ -70,24 +74,14 @@ class FriendController extends Controller
             'profiles.work')
             ->join('users', 'users.id', '=', 'friends.friend_id')
             ->join('profiles', 'profiles.user_id', '=', 'friends.friend_id')
-            ->where('friends.user_id', $user_id)
+            ->where('friends.user_id', $userId)
             ->orderBy('friends.user_id')
             ->paginate(10);
 
-        return response([ 'friends' => $friends,
-            'message' => 'Success'], 200);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Friend  $friend
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Friend $friend)
-    {
-
+        return response([
+            'friends' => $friends,
+            'message' => 'Success',
+        ], 200);
     }
 
     /**
@@ -96,38 +90,56 @@ class FriendController extends Controller
      * @param  \App\Models\Friend  $friend
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Friend $friend)
+    public function destroy(Friend $friend): Response
     {
         $friend->delete();
-        return response(['message' => 'Friend deleted']);
+
+        return response([
+            'message' => 'Friend deleted',
+        ]);
     }
 
-    public function findFriends($user_id) {
-        $friends = Friend::select(
-            'users.id')
+    /**
+     * Get friends ids
+     *
+     * @param  int $userId
+     * @return array
+     */
+    protected function getFriendIds(int $userId): array
+    {
+        return Friend
+            ::select('users.id')
             ->join('users', 'users.id', '=', 'friends.friend_id')
-            ->where('friends.user_id', $user_id)
+            ->where('friends.user_id', $userId)
             ->orderBy('friends.user_id')
-            ->paginate(10);
+            ->get()
+            ->map(function ($user) {
+                return $user->id;
+            })->toArray();
+    }
 
-        foreach($friends as $friend){
-            $friendIds[] = $friend->id;
-        }
-
-        $friendIds = !empty($friendIds) ? $friendIds : [];
-
+    /**
+     * Display user list excluding self
+     *
+     * @param int $userId
+     * @return \Illuminate\Http\Response
+     */
+    public function findFriends(int $userId): Response
+    {
         $users = User::select(
-            'users.id',
-            'users.name',
-            'profiles.profile_image'
-        )
+                'users.id',
+                'users.name',
+                'profiles.profile_image'
+            )
             ->join('profiles', 'profiles.user_id', '=', 'users.id')
-            ->whereNotIn('users.id', $friendIds)
-            ->where('users.id', '!=', $user_id)
+            ->whereNotIn('users.id', $this->getFriendIds($userId))
+            ->where('users.id', '!=', $userId)
             ->orderBy('users.name')
             ->paginate(10);
 
-        return response([ 'users' => $users,
-            'message' => 'Success'], 200);
+        return response([
+            'users'   => $users,
+            'message' => 'Success',
+        ], 200);
     }
 }

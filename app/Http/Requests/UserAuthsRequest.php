@@ -4,6 +4,10 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @property mixed $password
+ */
+
 class UserAuthsRequest extends FormRequest
 {
     /**
@@ -24,8 +28,8 @@ class UserAuthsRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255',
-            'email' => 'required|email|unique:users',
+            'name'     => 'required|max:255',
+            'email'    => 'required|email|unique:users',
             'password' => 'required|confirmed'
         ];
     }

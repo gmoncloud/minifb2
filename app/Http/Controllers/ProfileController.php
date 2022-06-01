@@ -6,17 +6,19 @@ use App\Models\Profile;
 use App\Http\Resources\ProfileResource;
 use App\Traits\ImageUpload;
 use App\Http\Requests\ProfileRequest;
+use Illuminate\Http\Response;
 
 class ProfileController extends Controller
 {
     use ImageUpload;
+
     /**
      * Store a newly created resource in storage.
      *
-     * @param  App\Http\Requests\ProfileRequest  $request
+     * @param \App\Http\Requests\ProfileRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProfileRequest $request)
+    public function store(ProfileRequest $request): Response
     {
         $input = $request->all();
 
@@ -26,9 +28,11 @@ class ProfileController extends Controller
         }
 
         $profile = Profile::create($input);
-        return response(['profile' => new
-        ProfileResource($profile),
-            'message' => 'Success'], 200);
+
+        return response([
+            'profile' => new ProfileResource($profile),
+            'message' => 'Success',
+        ], 200);
     }
 
     /**
@@ -37,22 +41,24 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id): Response
     {
         $profile = Profile::where('user_id', $id)->first();
-        return response(['profile' => new
-        ProfileResource($profile),
-            'message' => 'Success'], 200);
+
+        return response([
+            'profile' => new ProfileResource($profile),
+            'message' => 'Success',
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  App\Http\Requests\ProfileRequest  $request
-     * @param  int  $id
+     * @param \App\Http\Requests\ProfileRequest $request
+     * @param int                               $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ProfileRequest $request, $id)
+    public function update(ProfileRequest $request, int $id): Response
     {
         $profileData = Profile::where('user_id', $id)->first();
 
@@ -65,16 +71,19 @@ class ProfileController extends Controller
             unset($input['profile_image']);
         }
 
-        $profile = Profile::where("id", $profileData->id)
+        $profile = Profile::find($profileData->id)
             ->update([
-                'display_name' => $request->display_name,
+                'display_name'  => $request->display_name,
                 'profile_image' => !empty($input['profile_image']) ? $input['profile_image'] : $profileData->profile_image,
-                'education' => $request->education,
-                'current_city' => $request->current_city,
-                'hometown' => $request->hometown,
-                'work' => $request->work
+                'education'     => $request->education,
+                'current_city'  => $request->current_city,
+                'hometown'      => $request->hometown,
+                'work'          => $request->work
             ]);
 
-        return response(['profile' => $profile, 'message' => 'Success'], 200);
+        return response([
+            'profile' => $profile,
+            'message' => 'Success',
+        ], 200);
     }
 }

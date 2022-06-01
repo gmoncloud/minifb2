@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
+/**
+ * @method static create(array $data)
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -46,7 +50,7 @@ class User extends Authenticatable
     /**
      * Get all the post from the user
      */
-    public function posts()
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
@@ -54,7 +58,7 @@ class User extends Authenticatable
     /**
      * Get all the comments from the user
      */
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
@@ -62,7 +66,7 @@ class User extends Authenticatable
     /**
      * Get all the likes from the user
      */
-    public function likes()
+    public function likes(): HasMany
     {
         return $this->hasMany(Like::class);
     }
@@ -70,7 +74,7 @@ class User extends Authenticatable
     /**
      * Get the profile associated with the user.
      */
-    public function profile()
+    public function profile(): HasOne
     {
         return $this->hasOne(Profile::class);
     }
@@ -78,7 +82,7 @@ class User extends Authenticatable
     /**
      * Get all the friends from the user
      */
-    public function friends()
+    public function friends(): HasMany
     {
         return $this->hasMany(Friend::class);
     }

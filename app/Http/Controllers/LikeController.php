@@ -5,19 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Like;
 use Illuminate\Http\Request;
 use App\Http\Resources\LikeResource;
-use Ramsey\Uuid\Type\Integer;
+use Illuminate\Http\Response;
 
 class LikeController extends Controller
 {
     /**
      * Get like status
      *
-     * @param  $user_id int, $post_id int
+     * @param int $userId
+     * @param int $postId
      * @return boolean
      */
-    public function getUserPostLike($user_id, $post_id): bool {
-        return Like::select('like')->where('post_id', $post_id)
-            ->where('user_id', $user_id)
+    protected function getUserPostLike(int $userId, int $postId): bool {
+        return Like::select('like')->where('post_id', $postId)
+            ->where('user_id', $userId)
             ->first()->like ?? 0;
     }
 
@@ -27,25 +28,24 @@ class LikeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): Response
     {
         $getLike = $this->getUserPostLike($request->user_id, $request->post_id);
-        $like = Like::updateOrCreate(
-            [
-                'post_id' =>  $request->post_id,
-                'user_id' =>  $request->user_id
-
+        $like = Like::updateOrCreate([
+                'post_id' => $request->post_id,
+                'user_id' => $request->user_id
             ],
             [
-                'post_id' =>  $request->post_id,
-                'user_id' =>  $request->user_id,
-                'like' => !$getLike
+                'post_id' => $request->post_id,
+                'user_id' => $request->user_id,
+                'like'    => !$getLike
             ]
         );
 
-        return response(['like' => new
-        LikeResource($like),
-            'message' => 'Success'], 200);
+        return response([
+            'like'    => new LikeResource($like),
+            'message' => 'Success',
+        ], 200);
     }
 
     /**
@@ -55,23 +55,30 @@ class LikeController extends Controller
      * @param  \App\Models\Like  $like
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Like $like)
+    public function update(Request $request, Like $like): Response
     {
         $like->update($request->all());
-        return response(['comment' => new
-        LikeResource($like), 'message' => 'Success'], 200);
+
+        return response([
+            'comment' => new LikeResource($like),
+            'message' => 'Success',
+        ], 200);
     }
 
     /**
      * Count Post Likes
      *
-     * @param  Integer $post_id
+     * @param  int $postId
      * @return \Illuminate\Http\Response
      */
-    public function countLikes($post_id) {
-        $countLikes = Like::where('post_id', $post_id)
+    public function countLikes(int $postId): Response
+    {
+        $countLikes = Like::where('post_id', $postId)
             ->where('like', 1)->count();
 
-        return response(['likes' => $countLikes, 'message' => 'Success'], 200);
+        return response([
+            'likes'   => $countLikes,
+            'message' => 'Success',
+        ], 200);
     }
 }

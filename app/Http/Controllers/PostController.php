@@ -3,34 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Models\User;
 use App\Http\Requests\PostRequest;
 use App\Http\Resources\PostResource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Traits\ImageUpload;
+use Illuminate\Http\Response;
 
 class PostController extends Controller
 {
     use ImageUpload;
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): Response
     {
-        $posts = Post::with('comments', 'likes', 'user')
+        $posts = Post
+            ::with('comments', 'likes', 'user')
             ->withCount([
-            'comments',
-            'likes' => function (Builder $query) {
-                $query->where('like', 1);
-            }
-        ])->orderBy('posts.created_at', 'desc')
-            ->orderBy('posts.id', 'asc')
+                'comments',
+                'likes' => function (Builder $query) {
+                    $query->where('like', 1);
+                }
+            ])
+            ->orderBy('posts.created_at', 'desc')
             ->paginate(10);
 
-        return response([ 'posts' => $posts,
-            'message' => 'Success'], 200);
+        return response([
+            'posts'   => $posts,
+            'message' => 'Success',
+        ], 200);
     }
 
     /**
@@ -39,7 +43,7 @@ class PostController extends Controller
      * @param  \App\Http\Requests\PostRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PostRequest $request)
+    public function store(PostRequest $request): Response
     {
         $input = $request->all();
         $input['post_image'] = null;
@@ -50,31 +54,35 @@ class PostController extends Controller
         }
 
         $post = Post::create($input);
-        return response(['post' => new
-        PostResource($post),
-            'message' => 'Success'], 200);
+
+        return response([
+            'post'    => new PostResource($post),
+            'message' => 'Success',
+        ], 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\Author $post
+     * @param \App\Models\Post $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show(Post $post): Response
     {
-        return response([ 'post' => new
-        PostResource($post), 'message' => 'Success'], 200);
+        return response([
+            'post'    => new PostResource($post),
+            'message' => 'Success',
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\PostRequest  $request
-     * @param  \App\Models\Author $post
+     * @param  \App\Models\Post $post
      * @return \Illuminate\Http\Response
      */
-    public function update(PostRequest $request, Post $post)
+    public function update(PostRequest $request, Post $post): Response
     {
         $input = $request->all();
         $input['post_image'] = $post->post_image;
@@ -87,24 +95,31 @@ class PostController extends Controller
         }
 
         $post->update($input);
-        return response([ 'post' => new
-        PostResource($post), 'message' => 'Success'], 200);
+
+        return response([
+            'post'    => new PostResource($post),
+            'message' => 'Success',
+        ], 200);
 
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  App\Models\Post $post
+     * @param  \App\Models\Post $post
      * @return \Illuminate\Http\Response
      */
     public function destroy(Post $post)
     {
         $post->delete();
-        return response(['message' => 'Post deleted'], 200);
+
+        return response([
+            'message' => 'Post deleted',
+        ], 200);
     }
 
-    public function viewUserPost($user_id)
+
+    public function viewUserPost(int $userId): Response
     {
         $posts = Post::with('comments.user', 'likes', 'user')
             ->withCount([
@@ -113,12 +128,13 @@ class PostController extends Controller
                     $query->where('like', 1);
                 }
             ])
-            ->where('user_id', $user_id)
+            ->where('user_id', $userId)
             ->orderBy('posts.created_at', 'desc')
             ->paginate(5);
 
-        return response([ 'posts' => $posts,
-            'message' => 'Success'], 200);
-
+        return response([
+            'posts'   => $posts,
+            'message' => 'Success',
+        ], 200);
     }
 }
