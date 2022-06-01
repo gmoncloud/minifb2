@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Profile;
-use App\Http\Resources\ProfileResource;
 use App\Traits\ImageUpload;
 use App\Http\Requests\ProfileRequest;
 use Illuminate\Http\Response;
@@ -30,7 +29,7 @@ class ProfileController extends Controller
         $profile = Profile::create($input);
 
         return response([
-            'profile' => new ProfileResource($profile),
+            'profile' => $profile,
             'message' => 'Success',
         ], 200);
     }
@@ -46,7 +45,7 @@ class ProfileController extends Controller
         $profile = Profile::where('user_id', $id)->first();
 
         return response([
-            'profile' => new ProfileResource($profile),
+            'profile' => $profile,
             'message' => 'Success',
         ], 200);
     }
