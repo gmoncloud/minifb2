@@ -20,7 +20,7 @@ class Comment extends Model
         'comment_text'
     ];
 
-//    protected $with = ['user'];
+    protected $with = ['user'];
 
     /**
      * Get the user that owns the comment.
