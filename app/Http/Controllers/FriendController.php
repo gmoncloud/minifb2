@@ -127,10 +127,6 @@ class FriendController extends Controller
             ->orderBy('users.name')
             ->paginate(10);
 
-        foreach ($users as $user){
-            $user['profile_image'] = !empty($user['profile_image']) ? url('/images/profiles') . DIRECTORY_SEPARATOR .  $user['profile_image'] : null;
-        }
-
         return response([ 'users' => $users,
             'message' => 'Success'], 200);
     }
