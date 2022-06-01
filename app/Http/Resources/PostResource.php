@@ -10,6 +10,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed $written_text
  * @property mixed $created_at
  * @property mixed $updated_at
+ * @property mixed $post_image
  */
 class PostResource extends JsonResource
 {
@@ -24,7 +25,7 @@ class PostResource extends JsonResource
         return [
             'id'           => (string) $this->id,
             'user_id'      => (string) $this->user_id,
-            'post_image'   => !empty($this->post_image) ? url('/images/posts') . DIRECTORY_SEPARATOR . $this->post_image : null,
+            'post_image'   => $this->post_image,
             'written_text' => $this->written_text,
             'created_at'   => $this->created_at,
             'updated_at'   => $this->updated_at
