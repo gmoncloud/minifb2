@@ -115,7 +115,7 @@ class PostController extends Controller
             ])
             ->where('user_id', $user_id)
             ->orderBy('posts.created_at', 'desc')
-            ->paginate(10);
+            ->paginate(5);
 
         return response([ 'posts' => $posts,
             'message' => 'Success'], 200);
