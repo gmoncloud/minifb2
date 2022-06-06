@@ -96,7 +96,7 @@ class FriendController extends Controller
 
         return response([
             'message' => 'Friend deleted',
-        ]);
+        ], 200);
     }
 
     /**

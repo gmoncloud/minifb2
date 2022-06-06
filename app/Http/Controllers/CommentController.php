@@ -37,7 +37,7 @@ class CommentController extends Controller
         return response([
             'comment' => new CommentResource($comment),
             'message' => 'Success',
-        ]);
+        ], 201);
     }
 
     /**
@@ -77,7 +77,7 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment): response
+    public function destroy(Comment $comment): Response
     {
         $comment->delete();
 

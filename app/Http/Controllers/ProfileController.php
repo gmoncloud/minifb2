@@ -31,7 +31,7 @@ class ProfileController extends Controller
         return response([
             'profile' => $profile,
             'message' => 'Success',
-        ], 200);
+        ], 201);
     }
 
     /**

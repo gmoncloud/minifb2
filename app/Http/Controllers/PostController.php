@@ -58,7 +58,7 @@ class PostController extends Controller
         return response([
             'post'    => new PostResource($post),
             'message' => 'Success',
-        ], 200);
+        ], 201);
     }
 
     /**

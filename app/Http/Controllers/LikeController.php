@@ -30,7 +30,7 @@ class LikeController extends Controller
      */
     public function store(Request $request): Response
     {
-        $getLike = $this->getUserPostLike($request->user_id, $request->post_id);
+        $isLiked = $this->getUserPostLike($request->user_id, $request->post_id);
         $like = Like::updateOrCreate([
                 'post_id' => $request->post_id,
                 'user_id' => $request->user_id
@@ -38,7 +38,7 @@ class LikeController extends Controller
             [
                 'post_id' => $request->post_id,
                 'user_id' => $request->user_id,
-                'like'    => !$getLike
+                'like'    => !$isLiked
             ]
         );
 
