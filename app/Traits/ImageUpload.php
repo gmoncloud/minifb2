@@ -1,20 +1,21 @@
 <?php
 
 namespace App\Traits;
+use Illuminate\Http\UploadedFile;
 
 trait ImageUpload
 {
-    /**
-     * @var string
-     */
-    protected $uploadPath = 'images';
+
+    protected string $uploadPath = 'images';
 
     /**
-     * @var string
+     * Image Upload Trait
+     *
+     * @param \Illuminate\Http\UploadedFile $imageFile
+     * @param string                        $folderName
+     * @return string
      */
-    protected $folderName;
-
-    public function uploadImage($imageFile, $folderName): String
+    public function uploadImage(UploadedFile $imageFile, string $folderName): string
     {
         $destinationPath = $this->uploadPath . DIRECTORY_SEPARATOR . $folderName . DIRECTORY_SEPARATOR;
         $filename = date('YmdHis') . "." . $imageFile->getClientOriginalExtension();

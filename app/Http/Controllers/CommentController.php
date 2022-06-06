@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Http\Requests\CommentRequest;
 use App\Http\Resources\CommentResource;
+use Illuminate\Http\Response;
 
 class CommentController extends Controller
 {
@@ -13,12 +14,14 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): Response
     {
         $comments = Comment::all();
-        return response([ 'comments' =>
-            CommentResource::collection($comments),
-            'message' => 'Success'], 200);
+
+        return response([
+            'comments' => CommentResource::collection($comments),
+            'message'  => 'Success',
+        ], 200);
     }
 
     /**
@@ -27,12 +30,14 @@ class CommentController extends Controller
      * @param  \App\Http\Requests\CommentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CommentRequest $request)
+    public function store(CommentRequest $request): Response
     {
         $comment = Comment::create($request->all());
-        return response(['comment' => new
-        CommentResource($comment),
-            'message' => 'Success']);
+
+        return response([
+            'comment' => new CommentResource($comment),
+            'message' => 'Success',
+        ], 201);
     }
 
     /**
@@ -41,10 +46,12 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function show(Comment $comment)
+    public function show(Comment $comment): Response
     {
-        return response(['post' => new
-        CommentResource($comment), 'message' => 'Success'], 200);
+        return response([
+            'post'    => new CommentResource($comment),
+            'message' => 'Success',
+        ], 200);
     }
 
     /**
@@ -54,11 +61,14 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function update(CommentRequest $request, Comment $comment)
+    public function update(CommentRequest $request, Comment $comment): Response
     {
         $comment->update($request->all());
-        return response(['comment' => new
-        CommentResource($comment), 'message' => 'Success'], 200);
+
+        return response([
+            'comment' => new CommentResource($comment),
+            'message' => 'Success',
+        ], 200);
     }
 
     /**
@@ -67,9 +77,12 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
+    public function destroy(Comment $comment): Response
     {
         $comment->delete();
-        return response(['message' => 'Comment deleted'], 200);
+
+        return response([
+            'message' => 'Comment deleted',
+        ], 200);
     }
 }

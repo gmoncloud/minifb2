@@ -24,9 +24,9 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required',
+            'user_id'      => 'required',
             'written_text' => 'required',
-            'post_image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'post_image'   => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 }

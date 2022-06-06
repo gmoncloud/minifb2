@@ -37,7 +37,7 @@ Route::middleware('auth:api')->prefix('v1')->group(function() {
     Route::get('/profile/{id}', [ProfileController::class, 'show']);
     Route::put('/profile/{id}', [ProfileController::class, 'update']);
 
-    Route::apiResource('friend', FriendController::class);
+    Route::apiResource('friend', FriendController::class, ['except' => ['update']]);
     Route::get('count-likes/{post_id}', [LikeController::class, 'countLikes']);
     Route::get('find-friends/{user_id}', [FriendController::class, 'findFriends']);
 });

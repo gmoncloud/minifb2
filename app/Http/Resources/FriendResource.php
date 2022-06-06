@@ -4,13 +4,22 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @property mixed $id
+ * @property mixed $friend_id
+ * @property mixed $name
+ * @property mixed $profile_image
+ * @property mixed $education
+ * @property mixed $current_city
+ * @property mixed $work
+ */
 class FriendResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @return array
      */
     public function toArray($request)
     {

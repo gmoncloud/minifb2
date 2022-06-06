@@ -5,7 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property mixed $post_image
+ */
 class Post extends Model
 {
     use HasFactory;
@@ -24,7 +29,7 @@ class Post extends Model
     /**
      * Get all the comments from the post
      */
-    public function comments()
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
@@ -32,7 +37,7 @@ class Post extends Model
     /**
      * Get all the likes from the post
      */
-    public function likes()
+    public function likes(): HasMany
     {
         return $this->hasMany(Like::class);
     }
@@ -40,12 +45,13 @@ class Post extends Model
     /**
      * Get the user that owns the post.
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    function postImage(): Attribute {
+    public function postImage(): Attribute
+    {
         return Attribute::get(fn($value) => !empty($value) ? url('/images/posts') . DIRECTORY_SEPARATOR .  $value : null);
     }
 }

@@ -5,6 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
+/**
+ * @property mixed $user_id
+ * @method static create(array $input)
+ */
 
 class Profile extends Model
 {
@@ -28,7 +35,7 @@ class Profile extends Model
     /**
      * Get the user that owns the profile.
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -36,8 +43,13 @@ class Profile extends Model
     /**
      * Get the user that owns the profile.
      */
-    public function friend()
+    public function friend(): HasOne
     {
         return $this->hasOne(Friend::class);
+    }
+
+    public function profileImage(): Attribute
+    {
+        return Attribute::get(fn($value) => !empty($value) ? url('/images/profiles') . DIRECTORY_SEPARATOR .  $value : null);
     }
 }
